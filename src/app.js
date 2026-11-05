@@ -258,7 +258,7 @@
 
   function summaryText() {
     const r = lastResult || Calc.compute(state);
-    const lines = ['🧾 Divisão da conta (divide.ai)', ''];
+    const lines = ['🧾 Divisão da conta (divideaí)', ''];
     if (state.items.length) {
       lines.push('Itens:');
       state.items.forEach((it) => {

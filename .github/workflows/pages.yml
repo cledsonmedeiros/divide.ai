@@ -39,7 +39,8 @@ jobs:
       - name: Monta o site (só os arquivos públicos)
         run: |
           mkdir _site
-          cp -r index.html styles.css src CNAME _site/
+          cp -r index.html styles.css src icons favicon.ico og-image.png \
+            manifest.webmanifest sw.js robots.txt sitemap.xml CNAME _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

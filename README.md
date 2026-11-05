@@ -1,4 +1,6 @@
-# divide.ai
+# divideaí
+
+![divideaí](icons/logo.svg)
 
 App web para dividir a conta do restaurante com os amigos. Funciona no celular, sem cadastro, sem backend e sem dependências.
 
@@ -16,6 +18,7 @@ App web para dividir a conta do restaurante com os amigos. Funciona no celular, 
 - **Centavos exatos**: os cálculos usam centavos inteiros com o método do maior resto, então a soma das partes sempre fecha com o total.
 - **Compartilhar** o resumo pelo menu nativo do celular (Web Share API), **Enviar no WhatsApp** ou **Copiar**. O resumo traz os itens da conta, os totais e o que cada pessoa consumiu.
 - Os dados ficam salvos no navegador (`localStorage`).
+- **PWA**: instalável na tela inicial e funciona offline (service worker em `sw.js`).
 - Botão **Exemplo** carrega uma conta real (R$ 424,00 + 10 %).
 
 ## Como usar
@@ -48,6 +51,22 @@ Ou pela CLI: `npx vercel --prod`.
 
 O botão **Compartilhar** usa o menu nativo do sistema e precisa de HTTPS (a Vercel já serve assim). Ele aparece onde o navegador suporta (Android, iOS, Safari/Edge/Chrome desktop) e fica escondido quando o app roda dentro de um iframe de outro site.
 
+## Marca
+
+O arquivo-fonte da marca é `brand/divideai.vectorcraft` (VectorCraft), com 4 pranchetas:
+
+| Prancheta | Exporta para |
+| --- | --- |
+| `icon` (512×512, cantos arredondados) | `icons/icon.svg`, `icons/icon-192.png`, `icons/icon-512.png`, `favicon.ico` |
+| `icon-maskable` (512×512, fundo inteiro) | `icons/maskable-192.png`, `icons/maskable-512.png`, `icons/apple-touch-icon.png` (180) |
+| `logo` (horizontal) | `icons/logo.svg` (texto em curvas) |
+| `og-image` (1200×630) | `og-image.png` |
+
+Paleta: teal `#0f766e`, âmbar `#fbbf24`, tinta `#17201e`. Tipografia: Inter Bold.
+O `favicon.ico` sai do PNG: `convert icons/icon-512.png -define icon:auto-resize=48,32,16 favicon.ico`.
+
+Ao trocar algum arquivo do app ou dos ícones, aumente a `VERSION` em `sw.js` para os usuários receberem a versão nova.
+
 ## Testes
 
 ```bash
@@ -61,5 +80,10 @@ index.html       # marcação
 styles.css       # estilos (claro/escuro, mobile-first)
 src/calc.js      # lógica de divisão (pura, testável no Node)
 src/app.js       # interface
+src/pwa.js       # registro do service worker
+sw.js            # cache offline
+manifest.webmanifest
+icons/           # ícones e logo exportados
+brand/           # fonte da marca (VectorCraft), não vai para o deploy
 tests/           # testes com node:test
 ```

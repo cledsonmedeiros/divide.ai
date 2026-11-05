@@ -83,8 +83,17 @@ body::before {
   background: var(--bg);
 }
 
-.brand { font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; }
-.brand span { color: var(--accent); }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+.brand img { display: block; border-radius: 7px; }
+.brand-name > span { color: var(--accent); }
 .topbar-actions { display: flex; gap: 6px; }
 
 main {
