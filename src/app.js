@@ -271,9 +271,18 @@
     lines.push(`Total: ${money(r.total)}`);
     if (r.people.length) {
       lines.push('', 'Por pessoa:');
-      r.people.forEach((p) => {
-        const tip = state.tip.enabled && p.tip ? ` (consumo ${money(p.base)} + ${Calc.fmtQty(p.tipPct)}% ${money(p.tip)})` : '';
-        lines.push(`• ${p.name}: ${money(p.total)}${tip}`);
+      const byConsumption = state.splitMode === 'consumption';
+      r.people.forEach((p, idx) => {
+        if (idx > 0) lines.push('');
+        lines.push(`• ${p.name}: ${money(p.total)}`);
+        if (byConsumption) {
+          p.items.forEach((i) => {
+            const share = Calc.fmtQty(Math.round(i.share * 100) / 100);
+            lines.push(`   – ${share}× ${i.name || 'Item'}: ${money(Math.round(i.amount))}`);
+          });
+        }
+        const tip = state.tip.enabled ? ` + gorjeta ${Calc.fmtQty(p.tipPct)}% ${money(p.tip)}` : '';
+        lines.push(`   Consumo ${money(p.base)}${tip}`);
       });
     }
     return lines.join('\n');
