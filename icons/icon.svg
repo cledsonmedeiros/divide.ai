@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" viewBox="0 0 512 512">
+  <title>icon</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <path id="icon-bg" d="M112 0 L400 0 C461.856 0 512 50.144 512 112 L512 400 C512 461.856 461.856 512 400 512 L112 512 C50.144 512 0 461.856 0 400 L0 112 C0 50.144 50.144 0 112 0 Z" fill="#0f766e"/>
+    <path id="icon-bar" d="M140 228 L372 228 C387.464 228 400 240.536 400 256 L400 256 C400 271.464 387.464 284 372 284 L140 284 C124.536 284 112 271.464 112 256 L112 256 C112 240.536 124.536 228 140 228 Z" fill="#ffffff"/>
+    <circle id="icon-dot-top" cx="256" cy="150" r="46" fill="#fbbf24"/>
+    <circle id="icon-dot-bottom" cx="256" cy="362" r="46" fill="#fbbf24"/>
+  </g>
+</svg>
