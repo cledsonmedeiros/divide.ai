@@ -26,6 +26,16 @@ Abra o `index.html` no navegador. Ou sirva localmente:
 npm start   # http://localhost:8080
 ```
 
+## Publicar no GitHub Pages (divideai.ctech.foo)
+
+O workflow `.github/workflows/pages.yml` roda os testes em todo PR e publica o site a cada push na `main`.
+
+1. **DNS do `ctech.foo`**: crie `CNAME divideai → cledsonmedeiros.github.io` (no Cloudflare, com o proxy desligado).
+2. **Settings → Pages** do repositório: em *Source* escolha **GitHub Actions**; em *Custom domain* informe `divideai.ctech.foo`; depois que o certificado sair, marque **Enforce HTTPS**.
+3. Opcional, recomendado: verifique o domínio `ctech.foo` em *Settings → Pages* da sua conta.
+
+Domínios `.foo` só abrem em HTTPS, então o site só funciona depois que o GitHub emitir o certificado.
+
 ## Publicar na Vercel
 
 É um site estático, sem etapa de build (`vercel.json` já configurado):
