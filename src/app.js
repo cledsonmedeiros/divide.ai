@@ -1,4 +1,4 @@
-/* divide.ai — interface. Depende de window.Calc (src/calc.js). */
+/* divideaí — interface. Depende de window.Calc (src/calc.js) e window.Icons (src/icons.js). */
 (function () {
   'use strict';
 
@@ -72,7 +72,7 @@
     el.innerHTML = state.people
       .map(
         (p) => `<span class="chip">${esc(p.name)}
-          <button type="button" data-remove-person="${p.id}" aria-label="Remover ${esc(p.name)}">×</button></span>`
+          <button type="button" data-remove-person="${p.id}" aria-label="Remover ${esc(p.name)}">${Icons.svg('x')}</button></span>`
       )
       .join('');
   }
@@ -83,7 +83,7 @@
     const qty = Calc.parseNumber(item.qty);
     const cls = remaining === 0 ? 'ok' : remaining < 0 ? 'bad' : 'warn';
     const extra =
-      remaining > 0 ? ` · ${Calc.fmtQty(remaining)} sem dono (divide entre todos)` : remaining < 0 ? ' · passou do total!' : ' ✓';
+      remaining > 0 ? ` · ${Calc.fmtQty(remaining)} sem dono (divide entre todos)` : remaining < 0 ? ' · passou do total!' : ` ${Icons.svg('check')}`;
     return `<span class="${cls}">${Calc.fmtQty(assigned)} de ${Calc.fmtQty(qty)} atribuídas${extra}</span>`;
   }
 
@@ -99,9 +99,9 @@
           return `<div class="unit-row">
             <span>${esc(p.name)}</span>
             <div class="stepper">
-              <button type="button" data-step="-1" data-person="${p.id}" aria-label="Menos">−</button>
+              <button type="button" data-step="-1" data-person="${p.id}" aria-label="Menos">${Icons.svg('minus')}</button>
               <input type="number" inputmode="decimal" min="0" step="any" value="${v}" data-units="${p.id}" aria-label="Unidades de ${esc(p.name)}" />
-              <button type="button" data-step="1" data-person="${p.id}" aria-label="Mais">+</button>
+              <button type="button" data-step="1" data-person="${p.id}" aria-label="Mais">${Icons.svg('plus')}</button>
             </div>
           </div>`;
         })
@@ -138,7 +138,7 @@
         (it) => `<div class="item" data-item="${it.id}">
         <div class="item-head">
           <input class="it-name" type="text" value="${esc(it.name)}" data-field="name" aria-label="Nome do item" />
-          <button type="button" class="icon" data-remove-item aria-label="Remover item">×</button>
+          <button type="button" class="icon" data-remove-item aria-label="Remover item">${Icons.svg('x')}</button>
         </div>
         <div class="item-math">
           <input class="it-qty" type="number" inputmode="decimal" min="0" step="any" value="${it.qty}" data-field="qty" aria-label="Quantidade" />
@@ -316,7 +316,8 @@
   });
 
   $('#people').addEventListener('click', (e) => {
-    const id = e.target.dataset.removePerson;
+    const btn = e.target.closest('[data-remove-person]');
+    const id = btn && btn.dataset.removePerson;
     if (!id) return;
     state.people = state.people.filter((p) => p.id !== id);
     state.items.forEach((it) => {

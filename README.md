@@ -80,6 +80,7 @@ index.html       # marcação
 styles.css       # estilos (claro/escuro, mobile-first)
 src/calc.js      # lógica de divisão (pura, testável no Node)
 src/app.js       # interface
+src/icons.js     # ícones SVG embutidos (Lucide + WhatsApp do Simple Icons)
 src/pwa.js       # registro do service worker
 sw.js            # cache offline
 manifest.webmanifest
