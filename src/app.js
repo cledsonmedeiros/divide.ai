@@ -272,10 +272,10 @@
     return lines.join('\n');
   }
 
-  async function copy(text) {
+  async function copy(text, message = 'Resumo copiado!') {
     try {
       await navigator.clipboard.writeText(text);
-      toast('Resumo copiado!');
+      toast(message);
     } catch (_) {
       const ta = document.createElement('textarea');
       ta.value = text;
@@ -283,7 +283,7 @@
       ta.select();
       document.execCommand('copy');
       ta.remove();
-      toast('Resumo copiado!');
+      toast(message);
     }
   }
 
@@ -451,6 +451,10 @@
   }, () => state.items.length > 0 || state.people.length > 0);
 
   $('#btn-copy').addEventListener('click', () => copy(summaryText()));
+
+  // Doação: o código Pix (copia e cola) fica no próprio botão, em index.html.
+  $('#btn-pix').addEventListener('click', (e) =>
+    copy(e.currentTarget.dataset.pix, 'Código Pix copiado! Cole no app do seu banco.'));
 
   // Compartilhar nativo (Web Share API): abre o menu do sistema no celular
   // (WhatsApp, Telegram, e-mail…). Funciona em HTTPS (ex.: Vercel) ou localhost.

@@ -2,7 +2,7 @@
  * Navegação: rede primeiro (deploy novo aparece logo), cache se offline.
  * Arquivos estáticos: responde do cache e atualiza em segundo plano.
  * Ao mudar a lista APP_SHELL, troque a VERSION. */
-const VERSION = 'v4';
+const VERSION = 'v5';
 const CACHE = `divide.ai-${VERSION}`;
 const APP_SHELL = [
   './',
@@ -21,6 +21,7 @@ const APP_SHELL = [
   'icons/maskable-192.png',
   'icons/maskable-512.png',
   'icons/apple-touch-icon.png',
+  'icons/pix-qr.svg',
 ];
 
 self.addEventListener('install', (event) => {

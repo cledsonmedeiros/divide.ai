@@ -332,6 +332,13 @@ details li { display: flex; justify-content: space-between; gap: 10px; padding: 
 .warning { font-size: var(--fs-sm); padding: 8px 10px; border-radius: 10px; margin-bottom: 8px; background: var(--warn-bg); color: var(--warn); }
 .warning.over { background: var(--bad-bg); color: var(--bad); }
 
+.donate .donate-icon { display: inline-grid; color: var(--bad); }
+.donate .actions { margin-top: 12px; }
+.pix-qr { margin-top: 12px; font-size: var(--fs-sm); }
+.pix-qr summary { font-weight: var(--fw-semibold); }
+.pix-qr img { display: block; margin: 12px auto 4px; width: 200px; height: 200px; border-radius: 12px; border: 1px solid var(--border); background: #fff; }
+.pix-qr .hint { text-align: center; }
+
 #toast {
   position: fixed;
   left: 50%;

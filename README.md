@@ -22,6 +22,7 @@ Endereço: **https://divideai.ctech.foo**.
   - **Compartilhar resumo**: menu nativo do sistema (Web Share API). Precisa de HTTPS e aparece onde o navegador suporta (Android, iOS, Safari/Edge/Chrome no desktop); fica escondido quando o app roda dentro de um iframe de outro site.
   - **Enviar no WhatsApp** e **Copiar**: funcionam em qualquer navegador.
 - **Compartilhar como imagem**: gera um PNG com quanto cada um paga e os totais. Onde o navegador aceita arquivos (Android, iOS), abre o menu de compartilhar; nos outros, baixa a imagem.
+- **Doação via Pix**: cartão "Apoie o divideaí" no fim da página, com **Copiar código Pix** (copia e cola) e o QR Code. Pix estático, sem valor definido: quem doa escolhe quanto.
 - **PWA**: instalável na tela inicial e funciona offline (service worker em `sw.js`).
 - **SEO**: descrição, prévia de link (Open Graph com `og-image.png`), dados estruturados, `robots.txt` e `sitemap.xml`.
 - Os dados ficam só no navegador (`localStorage`, chave `divide.ai:v1`). A primeira visita abre com a conta vazia.
@@ -77,6 +78,17 @@ O arquivo-fonte é `brand/divideai.vectorcraft` (VectorCraft), com 4 pranchetas:
 - **Tipografia**: Inter. O logo usa Inter Bold; no app, a Inter variável (`fonts/inter-latin-var.woff2`, só caracteres latinos), com tamanhos e pesos nos tokens `--fs-*` e `--fw-*` do `styles.css`.
 - O `favicon.ico` sai do PNG: `convert icons/icon-512.png -define icon:auto-resize=48,32,16 favicon.ico`.
 
+## Doação via Pix
+
+O código Pix (copia e cola) fica em um lugar só: o atributo `data-pix` do botão `#btn-pix` em `index.html`. O teste `tests/pix.test.js` confere o CRC e a estrutura do código, porque um Pix inválido só seria descoberto quando alguém tentasse doar.
+
+Se o código mudar, gere o QR Code de novo e aumente a `VERSION` em `sw.js`:
+
+```bash
+qrencode -t SVG --svg-path -l M -m 2 -s 8 --foreground=17201e --background=ffffff \
+  -o icons/pix-qr.svg "<código Pix>"
+```
+
 ## Estrutura
 
 ```
@@ -89,7 +101,7 @@ src/icons.js          # ícones SVG embutidos
 src/pwa.js            # registro do service worker
 sw.js                 # cache offline
 manifest.webmanifest  # instalação do PWA
-icons/                # ícones e logo exportados
+icons/                # ícones, logo e QR Code do Pix
 fonts/                # Inter (woff2) + licença
 brand/                # fonte da marca (VectorCraft), não vai para o deploy
 tests/                # testes com node:test
