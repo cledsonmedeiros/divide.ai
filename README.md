@@ -14,7 +14,7 @@ App web para dividir a conta do restaurante com os amigos. Funciona no celular, 
     - Unidades sem dono são divididas entre todos, e o app avisa.
 - **Gorjeta**: ligada/desligada, percentual padrão (atalhos 0/10/12/15 %) e **gorjeta personalizada por pessoa**: cada um escolhe o seu %, e 0 é para quem não quer pagar gorjeta.
 - **Centavos exatos**: os cálculos usam centavos inteiros com o método do maior resto, então a soma das partes sempre fecha com o total.
-- **Compartilhar/Copiar** o resumo (ex.: para o WhatsApp).
+- **Compartilhar** o resumo pelo menu nativo do celular (Web Share API), **Enviar no WhatsApp** ou **Copiar**. O resumo traz os itens da conta, os totais e o que cada pessoa consumiu.
 - Os dados ficam salvos no navegador (`localStorage`).
 - Botão **Exemplo** carrega uma conta real (R$ 424,00 + 10 %).
 
@@ -26,7 +26,17 @@ Abra o `index.html` no navegador. Ou sirva localmente:
 npm start   # http://localhost:8080
 ```
 
-Para publicar, qualquer hospedagem estática serve (GitHub Pages, Netlify, Vercel…).
+## Publicar na Vercel
+
+É um site estático, sem etapa de build (`vercel.json` já configurado):
+
+1. Em [vercel.com/new](https://vercel.com/new), importe o repositório.
+2. Framework Preset: **Other**. Deixe build e output como estão.
+3. Deploy.
+
+Ou pela CLI: `npx vercel --prod`.
+
+O botão **Compartilhar** usa o menu nativo do sistema e precisa de HTTPS (a Vercel já serve assim). Ele aparece onde o navegador suporta (Android, iOS, Safari/Edge/Chrome desktop) e fica escondido quando o app roda dentro de um iframe de outro site.
 
 ## Testes
 

@@ -474,21 +474,37 @@
 
   $('#btn-copy').addEventListener('click', () => copy(summaryText()));
 
-  // O menu de compartilhamento do sistema só funciona fora de iframes (ex.: no
-  // claude.ai ele é bloqueado). Nesses casos o botão fica escondido e sobram
-  // "Enviar no WhatsApp" (link comum) e "Copiar".
-  let embedded = true;
-  try { embedded = window.self !== window.top; } catch (_) { /* iframe de outra origem */ }
-  $('#btn-share').hidden = !(navigator.share && !embedded);
+  // Compartilhar nativo (Web Share API): abre o menu do sistema no celular
+  // (WhatsApp, Telegram, e-mail…). Funciona em HTTPS (ex.: Vercel) ou localhost.
+  // Dentro de iframes de terceiros (ex.: claude.ai) o navegador bloqueia; nesses
+  // casos o botão some e ficam "Enviar no WhatsApp" e "Copiar".
+  function canNativeShare() {
+    if (!navigator.share || !window.isSecureContext) return false;
+    try {
+      if (window.self !== window.top) return false;
+    } catch (_) {
+      return false;
+    }
+    try {
+      return !navigator.canShare || navigator.canShare({ text: 'teste' });
+    } catch (_) {
+      return false;
+    }
+  }
+
+  const nativeShare = canNativeShare();
+  $('#btn-share').hidden = !nativeShare;
+  // Com o compartilhar nativo disponível, ele vira o botão principal.
+  $('#btn-whatsapp').classList.toggle('primary', !nativeShare);
 
   $('#btn-share').addEventListener('click', async () => {
     const text = summaryText();
-    if (navigator.share) {
-      try { await navigator.share({ title: 'Divisão da conta', text }); return; } catch (err) {
-        if (err && err.name === 'AbortError') return;
-      }
+    try {
+      await navigator.share({ title: 'Divisão da conta', text });
+    } catch (err) {
+      if (err && err.name === 'AbortError') return; // usuário fechou o menu
+      copy(text);
     }
-    copy(text);
   });
 
   renderAll();
