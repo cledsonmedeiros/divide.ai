@@ -1,4 +1,5 @@
-/* divideaí — interface. Depende de window.Calc (src/calc.js) e window.Icons (src/icons.js). */
+/* divideaí — interface. Depende de window.Calc (src/calc.js), window.Icons (src/icons.js)
+ * e window.ShareImage (src/share-image.js). */
 (function () {
   'use strict';
 
@@ -216,6 +217,7 @@
       ${state.tip.enabled ? `<div><span>Gorjeta</span><span>${money(r.tipTotal)}</span></div>` : ''}
       <div class="grand"><span>Total</span><span>${money(r.total)}</span></div>`;
     $('#btn-whatsapp').href = 'https://wa.me/?text=' + encodeURIComponent(summaryText());
+    $('#btn-image').disabled = !state.people.length;
     save();
   }
 
@@ -454,7 +456,7 @@
   // (WhatsApp, Telegram, e-mail…). Funciona em HTTPS (ex.: Vercel) ou localhost.
   // Dentro de iframes de terceiros (ex.: claude.ai) o navegador bloqueia; nesses
   // casos o botão some e ficam "Enviar no WhatsApp" e "Copiar".
-  function canNativeShare() {
+  function canNativeShare(data) {
     if (!navigator.share || !window.isSecureContext) return false;
     try {
       if (window.self !== window.top) return false;
@@ -462,13 +464,13 @@
       return false;
     }
     try {
-      return !navigator.canShare || navigator.canShare({ text: 'teste' });
+      return !navigator.canShare || navigator.canShare(data);
     } catch (_) {
       return false;
     }
   }
 
-  const nativeShare = canNativeShare();
+  const nativeShare = canNativeShare({ text: 'teste' });
   $('#btn-share').hidden = !nativeShare;
   // Com o compartilhar nativo disponível, ele vira o botão principal.
   $('#btn-whatsapp').classList.toggle('primary', !nativeShare);
@@ -481,6 +483,59 @@
       if (err && err.name === 'AbortError') return; // usuário fechou o menu
       copy(text);
     }
+  });
+
+  // Imagem do resultado: compartilha o PNG onde o navegador aceita arquivos
+  // (Android, iOS); nos outros, baixa o arquivo.
+  const IMAGE_NAME = 'divideai-conta.png';
+  const shareFiles =
+    typeof File === 'function' &&
+    !!navigator.canShare &&
+    canNativeShare({ files: [new File([new Uint8Array(1)], IMAGE_NAME, { type: 'image/png' })] });
+  $('#btn-image .label').textContent = shareFiles ? 'Compartilhar imagem' : 'Baixar imagem';
+
+  function resultImage() {
+    const model = ShareImage.buildModel({
+      state,
+      result: lastResult || Calc.compute(state),
+      money,
+      fmtQty: Calc.fmtQty,
+      date: new Intl.DateTimeFormat('pt-BR').format(new Date()),
+    });
+    return ShareImage.toFile(model, IMAGE_NAME);
+  }
+
+  function download(file) {
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    toast('Imagem salva');
+  }
+
+  $('#btn-image').addEventListener('click', async () => {
+    if (!state.people.length) return;
+    let file;
+    try {
+      file = resultImage();
+    } catch (err) {
+      console.error('[divideaí] falha ao gerar a imagem:', err);
+      toast('Não foi possível gerar a imagem');
+      return;
+    }
+    if (shareFiles) {
+      try {
+        await navigator.share({ files: [file], title: 'Divisão da conta' });
+        return;
+      } catch (err) {
+        if (err && err.name === 'AbortError') return; // usuário fechou o menu
+      }
+    }
+    download(file);
   });
 
   renderAll();

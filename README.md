@@ -17,6 +17,7 @@ App web para dividir a conta do restaurante com os amigos. Funciona no celular, 
 - **Gorjeta**: ligada/desligada, percentual padrão (atalhos 0/10/12/15 %) e **gorjeta personalizada por pessoa**: cada um escolhe o seu %, e 0 é para quem não quer pagar gorjeta.
 - **Centavos exatos**: os cálculos usam centavos inteiros com o método do maior resto, então a soma das partes sempre fecha com o total.
 - **Compartilhar** o resumo pelo menu nativo do celular (Web Share API), **Enviar no WhatsApp** ou **Copiar**. O resumo traz os itens da conta, os totais e o que cada pessoa consumiu.
+- **Compartilhar como imagem**: gera um PNG com quanto cada um paga e os totais. Onde o navegador aceita arquivos (Android, iOS), abre o menu de compartilhar; nos outros, baixa a imagem.
 - Os dados ficam salvos no navegador (`localStorage`).
 - **PWA**: instalável na tela inicial e funciona offline (service worker em `sw.js`).
 
@@ -79,6 +80,7 @@ index.html       # marcação
 styles.css       # estilos (claro/escuro, mobile-first)
 src/calc.js      # lógica de divisão (pura, testável no Node)
 src/app.js       # interface
+src/share-image.js # imagem (PNG) do resultado, desenhada em <canvas>
 src/icons.js     # ícones SVG embutidos (Lucide + WhatsApp do Simple Icons)
 src/pwa.js       # registro do service worker
 sw.js            # cache offline

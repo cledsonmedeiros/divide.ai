@@ -213,6 +213,8 @@ button.icon { display: inline-grid; place-items: center; padding: 8px; border: n
 button[data-icon], a.button[data-icon] { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
 button[data-icon][hidden] { display: none; }
 button.icon-only { padding-inline: 12px; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+button:disabled:active { transform: none; }
 
 .row { display: flex; gap: 8px; }
 .row > input { flex: 1; }
