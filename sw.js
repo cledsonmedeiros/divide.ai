@@ -1,8 +1,8 @@
-/* divide.ai — service worker.
- * Navegação: rede primeiro (deploy novo aparece logo), cache se offline.
- * Arquivos estáticos: responde do cache e atualiza em segundo plano.
- * Ao mudar a lista APP_SHELL, troque a VERSION. */
-const VERSION = 'v5';
+/* divideaí — service worker.
+ * Rede primeiro para tudo (página, CSS, JS, ícones): depois de um deploy, a
+ * página nova nunca roda com CSS/JS antigos. Sem internet, usa o cache.
+ * Ao mudar a lista APP_SHELL ou qualquer arquivo do app, troque a VERSION. */
+const VERSION = 'v6';
 const CACHE = `divide.ai-${VERSION}`;
 const APP_SHELL = [
   './',
@@ -42,33 +42,19 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
 
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then((res) => {
-          if (res.ok) {
-            const copy = res.clone();
-            caches.open(CACHE).then((cache) => cache.put('./', copy));
-          }
-          return res;
-        })
-        .catch(() => caches.match('./'))
-    );
-    return;
-  }
-
+  // A navegação é guardada como './' (a página única do app).
+  const key = request.mode === 'navigate' ? './' : request;
+  // no-cache: sempre revalida com o servidor (o GitHub Pages manda max-age=600);
+  // se nada mudou, a resposta é um 304 curto, via ETag.
   event.respondWith(
-    caches.match(request).then((cached) => {
-      const network = fetch(request)
-        .then((res) => {
-          if (res.ok) {
-            const copy = res.clone();
-            caches.open(CACHE).then((cache) => cache.put(request, copy));
-          }
-          return res;
-        })
-        .catch(() => cached);
-      return cached || network;
-    })
+    fetch(request, { cache: 'no-cache' })
+      .then((res) => {
+        if (res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then((cache) => cache.put(key, copy));
+        }
+        return res;
+      })
+      .catch(() => caches.match(key).then((cached) => cached || Response.error()))
   );
 });

@@ -20,7 +20,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
-## Simple Icons (logo do WhatsApp em src/icons.js)
+## Simple Icons (logos do WhatsApp e do Pix em src/icons.js)
 
 Dados dos ícones sob CC0 1.0 (domínio público): https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md
-A marca WhatsApp pertence à Meta; o uso aqui só identifica o botão que abre o WhatsApp.
+A marca WhatsApp pertence à Meta e a marca Pix ao Banco Central do Brasil; o uso aqui só identifica os botões de enviar no WhatsApp e de doar via Pix.

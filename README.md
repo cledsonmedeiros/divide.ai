@@ -110,4 +110,4 @@ tests/                # testes com node:test
 ## Créditos e licenças
 
 - [Inter](https://rsms.me/inter/), fonte sob SIL Open Font License 1.1 (`fonts/Inter-LICENSE.txt`).
-- [Lucide](https://lucide.dev), ícones de interface sob ISC; logo do WhatsApp do [Simple Icons](https://simpleicons.org), CC0 (`icons/LICENSES.md`). WhatsApp é marca da Meta.
+- [Lucide](https://lucide.dev), ícones de interface sob ISC; logos do WhatsApp e do Pix do [Simple Icons](https://simpleicons.org), CC0 (`icons/LICENSES.md`). WhatsApp é marca da Meta; Pix, do Banco Central do Brasil.

@@ -333,6 +333,8 @@ details li { display: flex; justify-content: space-between; gap: 10px; padding: 
 .warning.over { background: var(--bad-bg); color: var(--bad); }
 
 .donate .donate-icon { display: inline-grid; color: var(--bad); }
+.donate .donate-icon:empty { display: none; }
+#btn-pix .ic { color: #32bcad; } /* cor do logo do Pix */
 .donate .actions { margin-top: 12px; }
 .pix-qr { margin-top: 12px; font-size: var(--fs-sm); }
 .pix-qr summary { font-weight: var(--fw-semibold); }
