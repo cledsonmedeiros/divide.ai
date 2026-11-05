@@ -2,11 +2,12 @@
  * Navegação: rede primeiro (deploy novo aparece logo), cache se offline.
  * Arquivos estáticos: responde do cache e atualiza em segundo plano.
  * Ao mudar a lista APP_SHELL, troque a VERSION. */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = `divide.ai-${VERSION}`;
 const APP_SHELL = [
   './',
   'styles.css',
+  'fonts/inter-latin-var.woff2',
   'src/calc.js',
   'src/app.js',
   'src/pwa.js',

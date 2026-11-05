@@ -62,7 +62,7 @@ O arquivo-fonte da marca é `brand/divideai.vectorcraft` (VectorCraft), com 4 pr
 | `logo` (horizontal) | `icons/logo.svg` (texto em curvas) |
 | `og-image` (1200×630) | `og-image.png` |
 
-Paleta: teal `#0f766e`, âmbar `#fbbf24`, tinta `#17201e`. Tipografia: Inter Bold.
+Paleta: teal `#0f766e`, âmbar `#fbbf24`, tinta `#17201e`. Tipografia: Inter (no app, `fonts/inter-latin-var.woff2`: variável, só os caracteres latinos, licença OFL em `fonts/Inter-LICENSE.txt`). A escala de tamanhos e pesos está nos tokens `--fs-*` e `--fw-*` do `styles.css`.
 O `favicon.ico` sai do PNG: `convert icons/icon-512.png -define icon:auto-resize=48,32,16 favicon.ico`.
 
 Ao trocar algum arquivo do app ou dos ícones, aumente a `VERSION` em `sw.js` para os usuários receberem a versão nova.
@@ -84,6 +84,7 @@ src/pwa.js       # registro do service worker
 sw.js            # cache offline
 manifest.webmanifest
 icons/           # ícones e logo exportados
+fonts/           # Inter (woff2) + licença
 brand/           # fonte da marca (VectorCraft), não vai para o deploy
 tests/           # testes com node:test
 ```
