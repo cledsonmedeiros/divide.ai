@@ -234,6 +234,7 @@
       <div><span>Subtotal</span><span>${money(r.subtotal)}</span></div>
       ${state.tip.enabled ? `<div><span>Gorjeta</span><span>${money(r.tipTotal)}</span></div>` : ''}
       <div class="grand"><span>Total</span><span>${money(r.total)}</span></div>`;
+    $('#btn-whatsapp').href = 'https://wa.me/?text=' + encodeURIComponent(summaryText());
     save();
   }
 
@@ -473,11 +474,16 @@
 
   $('#btn-copy').addEventListener('click', () => copy(summaryText()));
 
+  // O menu de compartilhamento do sistema só funciona fora de iframes (ex.: no
+  // claude.ai ele é bloqueado). Nesses casos o botão fica escondido e sobram
+  // "Enviar no WhatsApp" (link comum) e "Copiar".
+  let embedded = true;
+  try { embedded = window.self !== window.top; } catch (_) { /* iframe de outra origem */ }
+  $('#btn-share').hidden = !(navigator.share && !embedded);
+
   $('#btn-share').addEventListener('click', async () => {
     const text = summaryText();
-    let embedded = true;
-    try { embedded = window.self !== window.top; } catch (_) { /* iframe de outra origem */ }
-    if (navigator.share && !embedded) {
+    if (navigator.share) {
       try { await navigator.share({ title: 'Divisão da conta', text }); return; } catch (err) {
         if (err && err.name === 'AbortError') return;
       }
