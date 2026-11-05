@@ -19,7 +19,6 @@ App web para dividir a conta do restaurante com os amigos. Funciona no celular, 
 - **Compartilhar** o resumo pelo menu nativo do celular (Web Share API), **Enviar no WhatsApp** ou **Copiar**. O resumo traz os itens da conta, os totais e o que cada pessoa consumiu.
 - Os dados ficam salvos no navegador (`localStorage`).
 - **PWA**: instalável na tela inicial e funciona offline (service worker em `sw.js`).
-- Botão **Exemplo** carrega uma conta real (R$ 424,00 + 10 %).
 
 ## Como usar
 

@@ -12,16 +12,6 @@
   const esc = (s) =>
     String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  const EXAMPLE_ITEMS = [
-    ['Massa', 10, 2500],
-    ['Tapioca', 2, 1200],
-    ['Copo de suco', 3, 700],
-    ['Coca 1L', 3, 1200],
-    ['Torre', 1, 5000],
-    ['Coca lata', 1, 700],
-    ['Sobremesa', 3, 1200],
-  ];
-
   function freshState() {
     return {
       people: [],
@@ -36,16 +26,7 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) return Object.assign(freshState(), JSON.parse(raw));
     } catch (_) { /* armazenamento indisponível */ }
-    return exampleState();
-  }
-
-  function exampleState(base) {
-    const st = base || freshState();
-    st.items = EXAMPLE_ITEMS.map(([n, q, p]) => newItem(n, q, p));
-    if (!st.people.length) {
-      st.people = ['Ana', 'Bruno', 'Carla', 'Diego'].map((name) => ({ id: uid(), name, tipPct: null }));
-    }
-    return st;
+    return freshState();
   }
 
   let state = load();
@@ -130,7 +111,7 @@
   function renderItems() {
     const el = $('#items');
     if (!state.items.length) {
-      el.innerHTML = '<p class="empty">Nenhum item ainda. Toque em “Exemplo” para carregar a conta da foto.</p>';
+      el.innerHTML = '<p class="empty">Nenhum item ainda. Adicione o que veio na conta.</p>';
       return;
     }
     el.innerHTML = state.items
@@ -460,12 +441,6 @@
       action();
     });
   }
-
-  armed($('#btn-example'), 'Substituir itens?', () => {
-    state = exampleState(state);
-    renderAll();
-    toast('Conta de exemplo carregada');
-  }, () => state.items.length > 0);
 
   armed($('#btn-reset'), 'Apagar tudo?', () => {
     state = freshState();
