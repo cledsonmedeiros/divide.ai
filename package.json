@@ -1,0 +1,11 @@
+{
+  "name": "divide.ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Divida a conta do restaurante com os amigos: igualmente ou pelo consumo, com gorjeta personalizada.",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "test": "node --test tests/*.test.js"
+  },
+  "license": "MIT"
+}

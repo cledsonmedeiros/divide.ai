@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f766e" />
+  <title>divide.ai — dividir a conta</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">divide<span>.ai</span></div>
+    <div class="topbar-actions">
+      <button type="button" class="ghost" id="btn-example" title="Carregar a conta de exemplo">Exemplo</button>
+      <button type="button" class="ghost" id="btn-reset" title="Começar uma conta nova">Nova conta</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2><span class="step">1</span> Quem está na mesa?</h2>
+      <form id="form-person" class="row" autocomplete="off">
+        <input id="person-name" type="text" placeholder="Nome (ex.: Ana)" maxlength="30" aria-label="Nome da pessoa" />
+        <button type="submit" class="primary">Adicionar</button>
+      </form>
+      <div id="people" class="chips"></div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> O que veio na conta?</h2>
+      <form id="form-item" class="item-form" autocomplete="off">
+        <input id="item-name" type="text" placeholder="Item (ex.: Massa)" aria-label="Nome do item" />
+        <input id="item-qty" type="number" inputmode="decimal" min="0" step="any" value="1" aria-label="Quantidade" title="Quantidade" />
+        <div class="money-input">
+          <span>R$</span>
+          <input id="item-price" type="text" inputmode="decimal" placeholder="0,00" aria-label="Preço unitário" title="Preço unitário" />
+        </div>
+        <button type="submit" class="primary">+</button>
+      </form>
+      <p class="hint">Quantidade × preço unitário. Ex.: 10 massas de R$ 25,00.</p>
+      <div id="items"></div>
+      <div class="subtotal-line">Subtotal <strong id="subtotal">R$ 0,00</strong></div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> Como dividir?</h2>
+      <div class="segmented" role="radiogroup" aria-label="Modo de divisão">
+        <button type="button" data-split="equal" role="radio">Igualmente</button>
+        <button type="button" data-split="consumption" role="radio">Pelo que cada um consumiu</button>
+      </div>
+      <p class="hint" id="split-hint"></p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">4</span> Gorjeta / taxa de serviço</h2>
+      <label class="switch">
+        <input type="checkbox" id="tip-enabled" />
+        <span>Incluir gorjeta</span>
+      </label>
+      <div id="tip-config">
+        <div class="tip-row">
+          <span>Padrão</span>
+          <div class="quick" id="tip-quick"></div>
+          <div class="pct-input">
+            <input id="tip-default" type="number" inputmode="decimal" min="0" step="any" aria-label="Gorjeta padrão em %" />
+            <span>%</span>
+          </div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="tip-custom" />
+          <span>Gorjeta personalizada por pessoa</span>
+        </label>
+        <div id="tip-people"></div>
+      </div>
+    </section>
+
+    <section class="card result" id="result-card">
+      <h2><span class="step">5</span> Quanto cada um paga</h2>
+      <div id="warnings"></div>
+      <div id="result"></div>
+      <div class="totals" id="totals"></div>
+      <div class="row actions">
+        <button type="button" class="primary" id="btn-share">Compartilhar resumo</button>
+        <button type="button" id="btn-copy">Copiar</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="src/calc.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
