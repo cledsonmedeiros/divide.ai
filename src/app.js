@@ -258,13 +258,24 @@
   function summaryText() {
     const r = lastResult || Calc.compute(state);
     const lines = ['🧾 Divisão da conta (divide.ai)', ''];
-    r.people.forEach((p) => {
-      const tip = state.tip.enabled && p.tip ? ` (consumo ${money(p.base)} + ${Calc.fmtQty(p.tipPct)}% ${money(p.tip)})` : '';
-      lines.push(`• ${p.name}: ${money(p.total)}${tip}`);
-    });
-    lines.push('', `Subtotal: ${money(r.subtotal)}`);
+    if (state.items.length) {
+      lines.push('Itens:');
+      state.items.forEach((it) => {
+        const qty = Calc.fmtQty(Calc.parseNumber(it.qty));
+        lines.push(`• ${qty}× ${it.name || 'Item'} — ${money(it.unitPrice)} = ${money(Calc.itemTotal(it))}`);
+      });
+      lines.push('');
+    }
+    lines.push(`Subtotal: ${money(r.subtotal)}`);
     if (state.tip.enabled) lines.push(`Gorjeta: ${money(r.tipTotal)}`);
     lines.push(`Total: ${money(r.total)}`);
+    if (r.people.length) {
+      lines.push('', 'Por pessoa:');
+      r.people.forEach((p) => {
+        const tip = state.tip.enabled && p.tip ? ` (consumo ${money(p.base)} + ${Calc.fmtQty(p.tipPct)}% ${money(p.tip)})` : '';
+        lines.push(`• ${p.name}: ${money(p.total)}${tip}`);
+      });
+    }
     return lines.join('\n');
   }
 
