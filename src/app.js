@@ -36,7 +36,16 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) return Object.assign(freshState(), JSON.parse(raw));
     } catch (_) { /* armazenamento indisponível */ }
-    return freshState();
+    return exampleState();
+  }
+
+  function exampleState(base) {
+    const st = base || freshState();
+    st.items = EXAMPLE_ITEMS.map(([n, q, p]) => newItem(n, q, p));
+    if (!st.people.length) {
+      st.people = ['Ana', 'Bruno', 'Carla', 'Diego'].map((name) => ({ id: uid(), name, tipPct: null }));
+    }
+    return st;
   }
 
   let state = load();
@@ -412,27 +421,43 @@
     renderResult();
   });
 
-  $('#btn-example').addEventListener('click', () => {
-    if (state.items.length && !confirm('Substituir os itens atuais pela conta de exemplo?')) return;
-    state.items = EXAMPLE_ITEMS.map(([n, q, p]) => newItem(n, q, p));
-    if (!state.people.length) {
-      state.people = ['Ana', 'Bruno', 'Carla', 'Diego'].map((name) => ({ id: uid(), name, tipPct: null }));
-    }
+  // Confirmação em dois toques (sem confirm(), que alguns navegadores embutidos bloqueiam).
+  function armed(btn, label, action, needsConfirm) {
+    const original = btn.textContent;
+    let timer = null;
+    btn.addEventListener('click', () => {
+      if (needsConfirm() && !btn.classList.contains('armed')) {
+        btn.classList.add('armed');
+        btn.textContent = label;
+        timer = setTimeout(() => { btn.classList.remove('armed'); btn.textContent = original; }, 3000);
+        return;
+      }
+      clearTimeout(timer);
+      btn.classList.remove('armed');
+      btn.textContent = original;
+      action();
+    });
+  }
+
+  armed($('#btn-example'), 'Substituir itens?', () => {
+    state = exampleState(state);
     renderAll();
     toast('Conta de exemplo carregada');
-  });
+  }, () => state.items.length > 0);
 
-  $('#btn-reset').addEventListener('click', () => {
-    if (!confirm('Apagar tudo e começar uma conta nova?')) return;
+  armed($('#btn-reset'), 'Apagar tudo?', () => {
     state = freshState();
     renderAll();
-  });
+    toast('Conta nova');
+  }, () => state.items.length > 0 || state.people.length > 0);
 
   $('#btn-copy').addEventListener('click', () => copy(summaryText()));
 
   $('#btn-share').addEventListener('click', async () => {
     const text = summaryText();
-    if (navigator.share) {
+    let embedded = true;
+    try { embedded = window.self !== window.top; } catch (_) { /* iframe de outra origem */ }
+    if (navigator.share && !embedded) {
       try { await navigator.share({ title: 'Divisão da conta', text }); return; } catch (err) {
         if (err && err.name === 'AbortError') return;
       }
